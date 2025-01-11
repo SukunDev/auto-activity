@@ -1,7 +1,7 @@
 import pygetwindow as gw
 import psutil
 import sys
-import keyboard  # Import keyboard library
+import keyboard
 
 from .mouse import Mouse
 from .logging import Logger
