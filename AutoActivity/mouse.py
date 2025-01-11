@@ -23,10 +23,10 @@ class Mouse:
         random_x = random.randint(0, screen_width)
         random_y = random.randint(0, screen_height)
         current_x, current_y = pyautogui.position()
-        self.__smoothMove(current_x, current_y, random_x, random_y, duration=random.uniform(1, 3))
+        self.__smoothMove(current_x, current_y, random_x, random_y, duration=random.uniform(0.01, 0.3))
 
     def __randomScroll(self) -> None:
-        scroll_amount = random.randint(-10, 10)
+        scroll_amount = random.randint(-100, 100)
         pyautogui.scroll(scroll_amount)
 
     def startTimer(self, sleep_time) -> None:

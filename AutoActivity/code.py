@@ -25,14 +25,20 @@ class Code:
         self.log.info("Start Typing on VS Code")
         sentence = random.choice(self.sentence)
         self.log.info(f"Typing Text {sentence}")
-        pyautogui.hotkey('ctrl', 'tab')
+        for i in range(random.randint(1,3)):
+            pyautogui.hotkey('ctrl', 'tab', interval=0.1)
+
+            self.mouse.startTimer(1)
+
         pyautogui.hotkey('ctrl', 'end')
         pyautogui.hotkey('enter')
         pyautogui.hotkey('ctrl', '/')
-        pyautogui.write(sentence)
+        pyautogui.write(sentence, interval=0.1)
         self.mouse.startTimer(5)
         self.log.info(f"Deleting Text {sentence}")
-        pyautogui.press('backspace', presses=len(f"  {sentence}"), interval=0.1)
+        pyautogui.press('backspace', presses=len(sentence), interval=0.1)
+        pyautogui.hotkey('ctrl', '/')
+        pyautogui.hotkey('backspace')
     
     def run(self):
         for i in range(self.randomTabSwitch):
