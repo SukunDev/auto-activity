@@ -2,6 +2,7 @@ import pyautogui
 import random
 from .mouse import Mouse
 from .logging import Logger
+import time
 
 class Code:
     def __init__(self, sentence = []):
@@ -25,24 +26,30 @@ class Code:
         self.log.info("Start Typing on VS Code")
         sentence = random.choice(self.sentence)
         self.log.info(f"Typing Text {sentence}")
-        for i in range(random.randint(1,3)):
-            pyautogui.hotkey('ctrl', 'tab', interval=0.1)
-
-            self.mouse.startTimer(1)
-
+        pyautogui.keyDown('ctrl')
+        for i in range(random.randint(1,5)):
+            pyautogui.press('tab')
+            time.sleep(0.1)
+        pyautogui.keyUp('ctrl')
+        time.sleep(0.5)
         pyautogui.hotkey('ctrl', 'end')
+        time.sleep(0.5)
         pyautogui.hotkey('enter')
+        time.sleep(0.5)
         pyautogui.hotkey('ctrl', '/')
+        time.sleep(0.5)
         pyautogui.write(sentence, interval=0.1)
         self.mouse.startTimer(5)
         self.log.info(f"Deleting Text {sentence}")
+        time.sleep(0.5)
         pyautogui.press('backspace', presses=len(sentence), interval=0.1)
+        time.sleep(0.5)
         pyautogui.hotkey('ctrl', '/')
+        time.sleep(0.5)
         pyautogui.hotkey('backspace')
     
     def run(self):
         for i in range(self.randomTabSwitch):
             self.__typeDeleteText()
             self.mouse.startTimer(30)
-
 
