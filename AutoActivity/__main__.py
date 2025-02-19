@@ -1,7 +1,10 @@
 import pygetwindow as gw
+import pyautogui
 import psutil
 import sys
 import keyboard
+import time
+import threading
 
 from .mouse import Mouse
 from .logging import Logger
@@ -10,6 +13,7 @@ from .code import Code
 from .config import *
 
 class AutoActivity:
+    TrackerTime = 0
     def __init__(self, process_name = []):
         """constructor Auto Activity"""
         self.mouse = Mouse()
@@ -53,8 +57,19 @@ class AutoActivity:
         keyboard.wait('F5')  # Wait for F5 key press
         self.log.info("F5 pressed. Starting AutoActivity...")
 
+
+    def stop(self):
+        time.sleep(AutoActivity.TrackerTime * 60)
+        pyautogui.hotkey('ctrl', 'alt', '[')
+
     def run(self):
+        AutoActivity.TrackerTime = input("Masukkan waktu dalam menit: ")
+        AutoActivity.TrackerTime = int(AutoActivity.TrackerTime)
+
+
         self.wait_for_keypress()  # Wait for F5 key press to begin
+        key_thread = threading.Thread(target=self.stop, daemon=True)
+        key_thread.start()
 
         self.mouse.startTimer(15)
         isLoop = True

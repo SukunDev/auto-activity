@@ -53,3 +53,4 @@ class Code:
             self.__typeDeleteText()
             self.mouse.startTimer(30)
 
+
