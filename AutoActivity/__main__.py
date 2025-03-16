@@ -1,94 +1,82 @@
-import pygetwindow as gw
-import pyautogui
-import psutil
-import sys
-import keyboard
-import time
-import threading
+# __main__.py
 
-from .mouse import Mouse
-from .logging import Logger
+import random
 from .chrome import Chrome
 from .code import Code
-from .config import *
+from .handler import Handler
+from .mouse import Mouse
+from .activity import Activity
 
-class AutoActivity:
-    TrackerTime = 0
-    def __init__(self, process_name = []):
-        """constructor Auto Activity"""
-        self.mouse = Mouse()
-        self.log = Logger()
-        self.chrome = Chrome()
-        self.code = Code()
-        self.process_name = process_name
-        if len(process_name) < 1:
-            self.process_name = ["chrome", "code"]
+class AutoActivity(Activity):
+    """AutoActivity class"""
 
-        for process in self.process_name:
-            if not self.__isProcessRunning(process):
-                self.log.error(f"Please Open {process} Before running this script")
-                sys.exit()
-                break
-            if process not in PROCESS_LIST:
-                self.log.error(f"Currently not support your proccess")
-                sys.exit()
+    def __init__(self):
+        """init for AutoActivity"""
+        super().__init__()
+        self.handler = Handler()
+        self.__chrome = Chrome(self.handler)
+        self.__code = Code(self.handler)
+        self.mouse = Mouse(self.handler)
+        self.callback = None  
 
-    def __isProcessRunning(self, process_name) -> bool:
-        for process in psutil.process_iter(['pid', 'name']):
-            try:
-                if process_name.lower() in process.info['name'].lower():
-                    self.log.info(f"Proccess {process_name} is running")
-                    return True
-            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-                pass
-        return False
+        self.handler.onMessage(self.onMessageHandler)
+        self.process_name = []
+        self.randomTabSwitch = random.randint(1, 5)
+        self.sentences = [
+                "TODO: create some function",
+                "TODO: create logic",
+                "TODO: add some data",
+                "TODO: searching some bug",
+                "TODO: fixing issue",
+            ]
+
+
     
-    def __bringWindowToFront(self, window_title) -> None:
-        windows = [w for w in gw.getWindowsWithTitle(window_title) if window_title.lower() in w.title.lower()]
-        if windows:
-            self.log.info(f"Activate Process {window_title}")
-            window = windows[0]
-            window.activate()
-            window.maximize()
+    def onMessageHandler(self, message):
+        """Callback internal untuk menangani pesan masuk"""
+        if self.callback:
+            self.callback(message) 
+        else:
+            print(f"[Default] Received message: {message}")
 
-    def wait_for_keypress(self):
-        """Wait for F5 key press to start and F6 to stop"""
-        self.log.info("Press F5 to start...")
-        keyboard.wait('F5')  # Wait for F5 key press
-        self.log.info("F5 pressed. Starting AutoActivity...")
+    def onMessage(self, func):
+        """Decorator untuk mendaftarkan callback"""
+        self.callback = func
+        return func 
+    
+    def chrome(self):
+        for i in range(self.randomTabSwitch):
+            self.mouse.startTimer(2)
+            self.mouse.switchTab()
+            self.mouse.startTimer(10)
 
+    def code(self):
+        for i in range(self.randomTabSwitch):
+            self.mouse.startTimer(2)
+            self.mouse.switchTab()
+            self.mouse.startTimer(2)
+            self.mouse.typeDeleteText(self.sentences)
+            self.mouse.startTimer(10)
 
+    def start(self, process_name = []):
+        self.process_name = process_name
+        Activity.is_active = True
+        while True:
+            for app in self.process_name:
+                self.mouse.startTimer(10)
+                if self.isProcessOnFront(app):
+                    if self.is_active and app == "chrome":
+                        self.chrome()
+                    if self.is_active and app == "code":
+                        self.code()
+                else:
+                    if self.is_active and app == "chrome":
+                        self.__chrome.run()
+                        self.chrome()
+                    if self.is_active and app == "code":
+                        self.__code.run()
+                        self.code()
+                self.mouse.startTimer(10)
+        
     def stop(self):
-        time.sleep(AutoActivity.TrackerTime * 60)
-        pyautogui.hotkey('ctrl', 'alt', '[')
-
-    def run(self):
-        AutoActivity.TrackerTime = input("Masukkan waktu dalam menit: ")
-        AutoActivity.TrackerTime = int(AutoActivity.TrackerTime)
-
-
-        self.wait_for_keypress()  # Wait for F5 key press to begin
-        key_thread = threading.Thread(target=self.stop, daemon=True)
-        key_thread.start()
-
-        self.mouse.startTimer(15)
-        isLoop = True
-        while isLoop:
-            # Check for F6 press to stop immediately
-            if keyboard.is_pressed('F6'):
-                self.log.info("F6 pressed. Stopping AutoActivity...")
-                isLoop = False
-                break
-
-            for process in self.process_name:
-                # Check for F6 press before each process execution
-                if keyboard.is_pressed('F6'):
-                    self.log.info("F6 pressed. Stopping AutoActivity...")
-                    isLoop = False
-                    break
-
-                self.__bringWindowToFront(process)
-                if process == "chrome":
-                    self.chrome.run()
-                elif process == "code":
-                    self.code.run()
+        Activity.is_active = False

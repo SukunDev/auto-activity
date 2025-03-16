@@ -1,10 +1,12 @@
 from AutoActivity import AutoActivity
 
+# Inisialisasi objek AutoActivity
+auto = AutoActivity()
 
-if __name__ == "__main__":
-    auto = AutoActivity(process_name=["chrome", "code"])
-    try:
-        auto.run()
-    except KeyboardInterrupt:
-        print("exit")
-        
+# Menggunakan decorator untuk mendaftarkan handler pesan
+@auto.onMessage
+def handle_message(message):
+    print(f"[Main] Received message: {message}")
+
+# Mulai aktivitas otomatis
+auto.start(["chrome", "code"])
