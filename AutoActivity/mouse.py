@@ -105,3 +105,6 @@ class Mouse(Activity):
         pyautogui.hotkey('backspace')
         self.__safeSleep(0.5)
         pyautogui.hotkey('ctrl', 'home')
+    
+    def stopUpworkTimeTracker(self):
+        pyautogui.hotkey('ctrl', 'alt', '[')

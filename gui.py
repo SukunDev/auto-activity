@@ -50,6 +50,7 @@ def countdown_timer(seconds):
             shutdown_system()
         if stop_upwork_var.get():
             log_message("[System] (Coming Soon) Stop Upwork Time Tracker...")
+            auto.mouse.stopUpworkTimeTracker()
 
 def shutdown_system():
     if platform.system() == "Windows":
@@ -149,14 +150,14 @@ tk.Checkbutton(
 stop_upwork_var = tk.BooleanVar()
 tk.Checkbutton(
     tab_settings,
-    text="Stop Upwork Time Tracker after completion (Coming Soon)",
+    text="Stop Upwork Time Tracker after completion",
     variable=stop_upwork_var,
-    state='disabled'
+    # state='disabled'
 ).pack(anchor='w', padx=20, pady=(5, 0))
 
 tk.Label(
     tab_settings,
-    text="* Upwork integration is not available yet",
+    text="* need to activate keyboard shortcut on settings",
     font=("Arial", 9, "italic"),
     fg="gray"
 ).pack(anchor='w', padx=20, pady=(0, 10))
