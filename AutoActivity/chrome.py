@@ -1,23 +1,14 @@
-import pyautogui
-import random
-from .logging import Logger
-from .mouse import Mouse
+from .activity import Activity
 
-class Chrome:
-    def __init__(self):
-        """Construct for Chrome class"""
-        self.log = Logger()
-        self.mouse = Mouse()
-        self.tabsSwitchCount = 0
-        self.randomTabSwitch = random.randint(1, 4)
+class Chrome(Activity):
+    """Chrome class"""
+    name = "chrome"
 
-    def __switchTab(self):
-        self.log.info("Switching Tab Chrome")
-        pyautogui.hotkey('ctrl', 'tab')
+    def __init__(self, handler):
+        """init for Chrome"""
+        super().__init__()
+        self.handler = handler
     
     def run(self):
-        for i in range(self.randomTabSwitch):
-            self.__switchTab()
-            self.mouse.startTimer(30)
-
-    
+        """Menjalankan Chrome activity"""
+        self.bringWindowToFront(self.name)
