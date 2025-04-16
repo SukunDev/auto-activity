@@ -14,6 +14,5 @@ class Code(Activity):
     
     def run(self):
         """Menjalankan Chrome activity"""
-        print(self.is_active)
         self.bringWindowToFront(self.name)
     

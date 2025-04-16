@@ -37,7 +37,6 @@ class Mouse(Activity):
     def startTimer(self, sleep_time) -> None:
         self.handler.handler(f"Random Mouse Event {sleep_time} seconds")
         start_time = time.time()
-        print(self.is_active)
         while time.time() - start_time < sleep_time and self.is_active:
             action = random.choice(['move', 'scroll'])
             

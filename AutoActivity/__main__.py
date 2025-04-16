@@ -61,7 +61,7 @@ class AutoActivity(Activity):
     def start(self, process_name = []):
         self.process_name = process_name
         Activity.is_active = True
-        while True:
+        while self.is_active:
             for app in self.process_name:
                 self.mouse.startTimer(10)
                 if self.isProcessOnFront(app):
