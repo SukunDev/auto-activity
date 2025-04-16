@@ -3,6 +3,8 @@ from tkinter import scrolledtext, messagebox, ttk
 from AutoActivity import AutoActivity
 import threading
 import time
+import os
+import platform
 
 auto = AutoActivity()
 
@@ -43,6 +45,21 @@ def countdown_timer(seconds):
     if running_flag[0]:
         auto.stop()
         log_message("[Timer] Time's up! AutoActivity stopped.")
+        if shutdown_var.get():
+            log_message("[System] Shutting down the system...")
+            shutdown_system()
+        if stop_upwork_var.get():
+            log_message("[System] (Coming Soon) Stop Upwork Time Tracker...")
+
+def shutdown_system():
+    if platform.system() == "Windows":
+        os.system("shutdown /s /t 5")
+    elif platform.system() == "Linux":
+        os.system("shutdown now")
+    elif platform.system() == "Darwin":
+        os.system("sudo shutdown -h now")
+    else:
+        log_message("[Error] Shutdown not supported on this OS.")
 
 def start_activity():
     selected_apps = get_selected_apps()
@@ -68,22 +85,20 @@ def stop_activity():
     auto.stop()
     log_message("[System] AutoActivity stopped manually.")
 
-# Setup root window
+# ================= GUI Setup ================= #
 root = tk.Tk()
 root.title("Auto Activity Controller")
-root.geometry("400x600")
+root.geometry("420x630")
 root.resizable(False, False)
 
-# Create tab control
 tab_control = ttk.Notebook(root)
 
-# ================= TAB 1: MAIN APP ================= #
+# ================= TAB 1: Scheduler ================= #
 tab_main = tk.Frame(tab_control)
 tab_control.add(tab_main, text="Scheduler")
 
 tk.Label(tab_main, text="Auto Activity Scheduler", font=("Arial", 14, "bold")).pack(pady=(10, 0))
 
-# Timer input
 tk.Label(tab_main, text="Set Timer (HH:MM)", font=("Arial", 12)).pack(pady=(10, 0))
 time_frame = tk.Frame(tab_main)
 hour1 = tk.Spinbox(time_frame, from_=0, to=9, width=2, font=("Arial", 14), justify='center')
@@ -97,7 +112,6 @@ min1.pack(side="left")
 min2.pack(side="left")
 time_frame.pack(pady=5)
 
-# Checkbox apps
 tk.Label(tab_main, text="Select Applications", font=("Arial", 12)).pack(pady=(10, 0))
 checkbox_frame = tk.Frame(tab_main)
 chrome_var = tk.BooleanVar()
@@ -106,22 +120,48 @@ tk.Checkbutton(checkbox_frame, text="Chrome", variable=chrome_var).pack(side='le
 tk.Checkbutton(checkbox_frame, text="VS Code", variable=vscode_var).pack(side='left', padx=5)
 tk.Checkbutton(checkbox_frame, text="Figma (Coming Soon)", state='disabled').pack(side='left', padx=5)
 checkbox_frame.pack(pady=(5, 0))
+
 tk.Label(tab_main, text="* Figma integration is not available yet", font=("Arial", 9, "italic"), fg="gray").pack(pady=(0, 5))
 
-# Buttons
 btn_frame = tk.Frame(tab_main)
 tk.Button(btn_frame, text="Start", command=start_activity, width=12, bg="#28a745", fg="white").pack(side='left', padx=10)
 tk.Button(btn_frame, text="Stop", command=stop_activity, width=12, bg="#dc3545", fg="white").pack(side='left', padx=10)
 btn_frame.pack(pady=10)
 
-# Shortcut info
 tk.Label(tab_main, text="Shortcut: F5 = Start, F6 = Stop", font=("Arial", 10, "italic"), fg="gray").pack(pady=(0, 5))
 
-# Log area
 log_text = scrolledtext.ScrolledText(tab_main, state='disabled', height=10, font=("Courier New", 10))
 log_text.pack(fill='both', expand=True, padx=10, pady=10)
 
-# ================= TAB 2: ABOUT ================= #
+# ================= TAB 2: Settings ================= #
+tab_settings = tk.Frame(tab_control)
+tab_control.add(tab_settings, text="Settings")
+
+tk.Label(tab_settings, text="Settings", font=("Arial", 14, "bold")).pack(pady=(20, 10))
+
+shutdown_var = tk.BooleanVar()
+tk.Checkbutton(
+    tab_settings,
+    text="Shutdown PC after completion",
+    variable=shutdown_var
+).pack(anchor='w', padx=20)
+
+stop_upwork_var = tk.BooleanVar()
+tk.Checkbutton(
+    tab_settings,
+    text="Stop Upwork Time Tracker after completion (Coming Soon)",
+    variable=stop_upwork_var,
+    state='disabled'
+).pack(anchor='w', padx=20, pady=(5, 0))
+
+tk.Label(
+    tab_settings,
+    text="* Upwork integration is not available yet",
+    font=("Arial", 9, "italic"),
+    fg="gray"
+).pack(anchor='w', padx=20, pady=(0, 10))
+
+# ================= TAB 3: About ================= #
 tab_about = tk.Frame(tab_control)
 tab_control.add(tab_about, text="About")
 
