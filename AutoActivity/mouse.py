@@ -57,7 +57,7 @@ class Mouse(Activity):
             elif action == 'scroll':
                 self.__randomScroll()
 
-            self.__safeSleep(random.uniform(0.5, 2))
+            self.__safeSleep(random.uniform(2, 5))
 
     def clickCenterScreen(self) -> None:
         if not self.is_active: return
@@ -93,7 +93,7 @@ class Mouse(Activity):
 
         if not self.is_active: return
         pyautogui.write(sentence, interval=0.1)
-        self.startTimer(5)
+        self.startTimer(30)
 
         if not self.is_active: return
         self.handler.handler(f"Deleting Text {sentence}")

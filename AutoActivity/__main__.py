@@ -23,12 +23,48 @@ class AutoActivity(Activity):
         self.process_name = []
         self.randomTabSwitch = random.randint(1, 5)
         self.sentences = [
-            "TODO: create some function",
-            "TODO: create logic",
-            "TODO: add some data",
-            "TODO: searching some bug",
-            "TODO: fixing issue",
+            "TODO: create basic function",
+            "TODO: add simple logic",
+            "TODO: add more data",
+            "TODO: search for bugs",
+            "TODO: fix issues",
+            "TODO: improve code",
+            "TODO: refactor code",
+            "TODO: add validation",
+            "TODO: handle errors",
+            "TODO: update documentation",
+            "TODO: write tests",
+            "TODO: clean up code",
+            "TODO: review code",
+            "TODO: simplify process",
+            "TODO: check performance",
+            "TODO: optimize logic",
+            "TODO: update structure",
+            "TODO: reorganize files",
+            "TODO: remove unused code",
+            "TODO: add comments",
+            "TODO: test edge cases",
+            "TODO: verify results",
+            "TODO: update variables",
+            "TODO: rename functions",
+            "TODO: split large function",
+            "TODO: merge similar code",
+            "TODO: check dependencies",
+            "TODO: update config",
+            "TODO: add default values",
+            "TODO: improve naming",
+            "TODO: check input",
+            "TODO: check output",
+            "TODO: reduce duplication",
+            "TODO: improve readability",
+            "TODO: standardize format",
+            "TODO: review logic flow",
+            "TODO: prepare sample data",
+            "TODO: add fallback logic",
+            "TODO: improve structure",
+            "TODO: finalize changes",
         ]
+
 
     def onMessageHandler(self, message):
         """Callback internal untuk menangani pesan masuk"""
@@ -45,30 +81,30 @@ class AutoActivity(Activity):
     def chrome(self):
         for _ in range(self.randomTabSwitch):
             if not self.is_active: break
-            self.mouse.startTimer(2)
+            self.mouse.startTimer(10)
+
+            if not self.is_active: break
+            self.mouse.switchTab()
+
+            if not self.is_active: break
+            self.mouse.startTimer(30)
+
+    def code(self):
+        for _ in range(self.randomTabSwitch):
+            if not self.is_active: break
+            self.mouse.startTimer(10)
 
             if not self.is_active: break
             self.mouse.switchTab()
 
             if not self.is_active: break
             self.mouse.startTimer(10)
-
-    def code(self):
-        for _ in range(self.randomTabSwitch):
-            if not self.is_active: break
-            self.mouse.startTimer(2)
-
-            if not self.is_active: break
-            self.mouse.switchTab()
-
-            if not self.is_active: break
-            self.mouse.startTimer(2)
 
             if not self.is_active: break
             self.mouse.typeDeleteText(self.sentences)
 
             if not self.is_active: break
-            self.mouse.startTimer(10)
+            self.mouse.startTimer(30)
 
     def start(self, process_name=[]):
         self.process_name = process_name
@@ -76,7 +112,7 @@ class AutoActivity(Activity):
         while self.is_active:
             for app in self.process_name:
                 if not self.is_active: break
-                self.mouse.startTimer(10)
+                self.mouse.startTimer(30)
 
                 if not self.is_active: break
                 if self.isProcessOnFront(app):
@@ -94,7 +130,7 @@ class AutoActivity(Activity):
                         self.code()
 
                 if not self.is_active: break
-                self.mouse.startTimer(10)
+                self.mouse.startTimer(30)
 
     def stop(self):
         Activity.is_active = False
