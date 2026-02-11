@@ -81,30 +81,30 @@ class AutoActivity(Activity):
     def chrome(self):
         for _ in range(self.randomTabSwitch):
             if not self.is_active: break
-            self.mouse.startTimer(20)
+            self.mouse.startTimer(10)
 
             if not self.is_active: break
             self.mouse.switchTab()
 
             if not self.is_active: break
-            self.mouse.startTimer(60)
+            self.mouse.startTimer(30)
 
     def code(self):
         for _ in range(self.randomTabSwitch):
             if not self.is_active: break
-            self.mouse.startTimer(20)
+            self.mouse.startTimer(10)
 
             if not self.is_active: break
             self.mouse.switchTab()
 
             if not self.is_active: break
-            self.mouse.startTimer(20)
+            self.mouse.startTimer(10)
 
             if not self.is_active: break
             self.mouse.typeDeleteText(self.sentences)
 
             if not self.is_active: break
-            self.mouse.startTimer(60)
+            self.mouse.startTimer(30)
 
     def start(self, process_name=[]):
         self.process_name = process_name
@@ -112,7 +112,7 @@ class AutoActivity(Activity):
         while self.is_active:
             for app in self.process_name:
                 if not self.is_active: break
-                self.mouse.startTimer(60)
+                self.mouse.startTimer(30)
 
                 if not self.is_active: break
                 if self.isProcessOnFront(app):
@@ -130,7 +130,7 @@ class AutoActivity(Activity):
                         self.code()
 
                 if not self.is_active: break
-                self.mouse.startTimer(60)
+                self.mouse.startTimer(30)
 
     def stop(self):
         Activity.is_active = False
