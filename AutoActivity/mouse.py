@@ -93,7 +93,7 @@ class Mouse(Activity):
 
         if not self.is_active: return
         pyautogui.write(sentence, interval=0.1)
-        self.startTimer(30)
+        self.startTimer(60)
 
         if not self.is_active: return
         self.handler.handler(f"Deleting Text {sentence}")
